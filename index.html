@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NIDS Web App</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Consolas, monospace;
+            padding: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff7f;
+            margin-bottom: 20px;
+        }
+        select, input, button {
+            padding: 8px;
+            border-radius: 6px;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #00ff7f;
+            color: black;
+            cursor: pointer;
+        }
+        #live-alerts {
+            background: black;
+            color: lime;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            min-height: 200px;
+            font-size: 14px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">🔍 Network Intrusion Detection System</div>
+
+    <div>
+        <label>Network Interface:</label>
+        <select id="interface">
+            {% for iface in interfaces %}
+                <option value="{{iface}}">{{iface}}</option>
+            {% endfor %}
+        </select>
+
+        <label>Target IP:</label>
+        <input id="target" placeholder="e.g. 127.0.0.1">
+        <button onclick="startSniffing()">Start Sniffing</button>
+    </div>
+
+    <div id="live-alerts">
+        <b>Live Alerts:</b>
+        <br>
+    </div>
+
+    <script>
+        async function startSniffing() {
+            const iface = document.getElementById("interface").value;
+            const target = document.getElementById("target").value;
+            const res = await fetch("/start", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({interface: iface, target: target})
+            });
+            const data = await res.json();
+            const alertBox = document.getElementById("live-alerts");
+            const msg = document.createElement("p");
+            msg.style.color = "#00ff7f";
+            msg.textContent = `✅ Sniffing started on ${data.interface} (Target: ${data.target})`;
+            alertBox.prepend(msg);
+        }
+
+        const evtSource = new EventSource("/alerts");
+        evtSource.onmessage = function(e) {
+            const div = document.getElementById("live-alerts");
+            const p = document.createElement("p");
+            p.textContent = e.data;
+            p.style.color = "lime";
+            div.prepend(p);
+        };
+    </script>
+</body>
+</html>

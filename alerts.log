@@ -1,0 +1,11 @@
+[2025-11-06 20:14:14] ALERT: ICMP_FLOOD from 127.0.0.1 - 200 ICMP packets in 10.0s
+[*] Sniffing started on \Device\NPF_Loopback
+[*] Sniffing started on {F71D6A6F-EC46-4A11-B4BD-81434723EE30}
+Error: Error opening adapter: The filename, directory name, or volume label syntax is incorrect.  (123)
+[*] Sniffing started on {F71D6A6F-EC46-4A11-B4BD-81434723EE30}
+Error: Error opening adapter: The filename, directory name, or volume label syntax is incorrect.  (123)
+[*] Sniffing started on \Device\NPF_Loopback
+[*] Sniffing started on Wi-Fi
+[*] Sniffing started on Local Area Connection* 1
+[*] Sniffing started on Local Area Connection* 1
+[21:17:40] ALERT: PAYLOAD_SIG sql_injection
